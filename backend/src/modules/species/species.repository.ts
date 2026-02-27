@@ -72,7 +72,7 @@ export class SpeciesRepository {
       .offset(offset);
 
     const results = await query;
-    const data = results.map(row => row.species);
+    const data = results.map((row) => row.species);
     const count = results.length > 0 ? results[0].totalCount : 0;
 
     return {
@@ -168,19 +168,18 @@ export class SpeciesRepository {
         richContentType: typeof draftRichContent,
         richContentBlocks: draftRichContent?.blocks?.length || 0,
       });
-      
+
       // Extract fields from draftData
-      const {
-        richContent: draftRichContentField,
-        ...otherDraftFields
-      } = current.draftData as any;
-      
+      const { richContent: draftRichContentField, ...otherDraftFields } =
+        current.draftData as any;
+
       // Explicitly handle richContent to ensure it's properly saved
       // Use draft richContent if it exists, otherwise keep current
-      const richContentToSave = draftRichContentField !== undefined 
-        ? draftRichContentField 
-        : current.richContent;
-      
+      const richContentToSave =
+        draftRichContentField !== undefined
+          ? draftRichContentField
+          : current.richContent;
+
       // Build update data with explicit field handling
       const updateData: any = {
         // Spread other draft fields
@@ -195,21 +194,21 @@ export class SpeciesRepository {
         publishedAt: new Date(),
         updatedAt: new Date(),
       };
-      
+
       // Remove undefined fields to avoid overwriting with null
-      Object.keys(updateData).forEach(key => {
+      Object.keys(updateData).forEach((key) => {
         if (updateData[key] === undefined) {
           delete updateData[key];
         }
       });
-      
+
       console.log('Update data being saved:', {
         hasRichContent: !!updateData.richContent,
         richContentType: typeof updateData.richContent,
         richContentBlocks: updateData.richContent?.blocks?.length || 0,
         allFields: Object.keys(updateData),
       });
-      
+
       const [result] = await db
         .update(species)
         .set(updateData)
@@ -221,18 +220,18 @@ export class SpeciesRepository {
         hasRichContent: !!result.richContent,
         richContentBlocks: result.richContent?.blocks?.length || 0,
       });
-      
+
       // Verify the data was saved correctly
       const [verification] = await db
         .select()
         .from(species)
         .where(eq(species.id, id));
-      
+
       console.log('Verification after publish:', {
         hasRichContent: !!verification.richContent,
         richContentBlocks: verification.richContent?.blocks?.length || 0,
       });
-      
+
       return result;
     }
     // Si no hay draft pero está en borrador, simplemente publicar
@@ -273,8 +272,8 @@ export class SpeciesRepository {
     };
 
     // Log what we're saving for debugging
-    const draftRichContent = draftData.richContent as any;
-    const updatedRichContent = updatedDraft.richContent as any;
+    const draftRichContent = draftData.richContent;
+    const updatedRichContent = updatedDraft.richContent;
     console.log('Creating/updating draft with data:', {
       id,
       field: Object.keys(draftData)[0], // Log which field is being updated

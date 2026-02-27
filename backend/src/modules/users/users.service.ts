@@ -40,9 +40,10 @@ export class UsersService {
   }
 
   async findOne(id: string | number) {
-    const user = typeof id === 'string' 
-      ? await this.usersRepository.findByClerkId(id)
-      : await this.usersRepository.findById(id);
+    const user =
+      typeof id === 'string'
+        ? await this.usersRepository.findByClerkId(id)
+        : await this.usersRepository.findById(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
@@ -91,13 +92,13 @@ export class UsersService {
       // First, get the current user data from Clerk to preserve existing metadata
       const clerkUser = await this.clerkClient.users.getUser(clerkId);
       const currentMetadata = clerkUser.publicMetadata || {};
-      
+
       // Get the database user to include userId
       const dbUser = await this.usersRepository.findByClerkId(clerkId);
       if (!dbUser) {
         throw new Error(`User not found in database with clerkId ${clerkId}`);
       }
-      
+
       // Update only the role and userId, preserving other metadata
       await this.clerkClient.users.updateUser(clerkId, {
         publicMetadata: {
@@ -106,7 +107,9 @@ export class UsersService {
           userId: dbUser.id,
         },
       });
-      console.log(`Successfully synced role ${role} and userId ${dbUser.id} to Clerk for user ${clerkId}`);
+      console.log(
+        `Successfully synced role ${role} and userId ${dbUser.id} to Clerk for user ${clerkId}`,
+      );
     } catch (error) {
       console.error(`Failed to sync role to Clerk for user ${clerkId}:`, error);
       // We don't throw here to avoid breaking the update flow
@@ -123,7 +126,7 @@ export class UsersService {
     role?: string;
   }) {
     const newUser = await this.usersRepository.createFromClerk(userData);
-    
+
     // Sync userId to Clerk metadata after creation
     if (newUser) {
       try {
@@ -131,7 +134,7 @@ export class UsersService {
           userData.clerkId,
         );
         const currentMetadata = clerkUser.publicMetadata || {};
-        
+
         await this.clerkClient.users.updateUser(userData.clerkId, {
           publicMetadata: {
             ...currentMetadata,
@@ -139,12 +142,17 @@ export class UsersService {
             userId: newUser.id,
           },
         });
-        console.log(`Synced userId ${newUser.id} to Clerk for new user ${userData.clerkId}`);
+        console.log(
+          `Synced userId ${newUser.id} to Clerk for new user ${userData.clerkId}`,
+        );
       } catch (error) {
-        console.error(`Failed to sync userId to Clerk for new user ${userData.clerkId}:`, error);
+        console.error(
+          `Failed to sync userId to Clerk for new user ${userData.clerkId}:`,
+          error,
+        );
       }
     }
-    
+
     return newUser;
   }
 

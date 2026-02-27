@@ -38,7 +38,12 @@ class APIClient {
     })
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`)
+      const errorBody = await response.text().catch(() => '')
+      console.error(
+        `API Error: ${response.status} ${response.statusText} - ${url}`,
+        errorBody ? `Body: ${errorBody.slice(0, 200)}` : '',
+      )
+      throw new Error(`API Error: ${response.status} ${response.statusText} - ${url}`)
     }
 
     return response.json()

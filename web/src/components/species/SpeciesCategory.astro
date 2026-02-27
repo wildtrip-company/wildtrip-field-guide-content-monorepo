@@ -16,7 +16,7 @@ const { species } = Astro.props
         <div class="flex flex-wrap gap-3">
           {species.mainGroup && (
             <div class="flex items-center gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <span class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
                 Grupo:
               </span>
               <span class="rounded-md bg-blue-100 px-2.5 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
@@ -26,7 +26,7 @@ const { species } = Astro.props
           )}
           {species.specificCategory && (
             <div class="flex items-center gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <span class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
                 Categoría:
               </span>
               <span class="rounded-md bg-purple-100 px-2.5 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">

@@ -1,5 +1,6 @@
-import { apiClient } from '../api/client'
 import type { RichContent } from '@wildtrip/shared'
+
+import { apiClient } from '../api/client'
 
 export type PublicNews = {
   slug: string
@@ -45,28 +46,33 @@ class NewsRepository {
   async findPublished(params: NewsPaginateParams): Promise<NewsPaginateResult> {
     const { page = 1, limit = 10, category, ...filters } = params
 
-    const response = await apiClient.news.findAll({
-      page,
-      limit,
-      status: 'published',
-      ...(category && category !== 'all' ? { category } : {}),
-      ...filters,
-    })
+    try {
+      const response = await apiClient.news.findAll({
+        page,
+        limit,
+        status: 'published',
+        ...(category && category !== 'all' ? { category } : {}),
+        ...filters,
+      })
 
-    // Map the API response to match our types
-    const mappedData = (response.data || []).map((item: any) => ({
-      ...item,
-      mainImageUrl: item.mainImage?.url || item.mainImageUrl || null,
-    }))
+      // Map the API response to match our types
+      const mappedData = (response.data || []).map((item: any) => ({
+        ...item,
+        mainImageUrl: item.mainImage?.url || item.mainImageUrl || null,
+      }))
 
-    return {
-      data: mappedData,
-      pagination: {
-        page: response.pagination?.page || page,
-        pageSize: response.pagination?.limit || limit,
-        total: response.pagination?.total || 0,
-        totalPages: response.pagination?.totalPages || 0,
-      },
+      return {
+        data: mappedData,
+        pagination: {
+          page: response.pagination?.page || page,
+          pageSize: response.pagination?.limit || limit,
+          total: response.pagination?.total || 0,
+          totalPages: response.pagination?.totalPages || 0,
+        },
+      }
+    } catch (error) {
+      console.error('Error fetching published news:', error)
+      return { data: [], pagination: { page, pageSize: limit, total: 0, totalPages: 0 } }
     }
   }
 
@@ -105,27 +111,37 @@ class NewsRepository {
   }
 
   async getLastPublished(limit: number = 3): Promise<PublicNews[]> {
-    const response = await apiClient.news.findAll({
-      page: 1,
-      limit,
-      status: 'published',
-      sortBy: 'publishedAt',
-      sortOrder: 'desc',
-    })
-    // Map the API response to match our types
-    return (response.data || []).map((item: any) => ({
-      ...item,
-      mainImageUrl: item.mainImage?.url || item.mainImageUrl || null,
-    }))
+    try {
+      const response = await apiClient.news.findAll({
+        page: 1,
+        limit,
+        status: 'published',
+        sortBy: 'publishedAt',
+        sortOrder: 'desc',
+      })
+      // Map the API response to match our types
+      return (response.data || []).map((item: any) => ({
+        ...item,
+        mainImageUrl: item.mainImage?.url || item.mainImageUrl || null,
+      }))
+    } catch (error) {
+      console.error('Error fetching last published news:', error)
+      return []
+    }
   }
 
   async getTotalPublished(): Promise<number> {
-    const response = await apiClient.news.findAll({
-      page: 1,
-      limit: 1,
-      status: 'published',
-    })
-    return response.pagination?.total || 0
+    try {
+      const response = await apiClient.news.findAll({
+        page: 1,
+        limit: 1,
+        status: 'published',
+      })
+      return response.pagination?.total || 0
+    } catch (error) {
+      console.error('Error fetching total published news:', error)
+      return 0
+    }
   }
 }
 

@@ -27,22 +27,18 @@ if (species.distribution) {
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           {species.habitat && (
             <div>
-              <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+              <h3 class="mb-3 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">
                 Hábitat
               </h3>
-              <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                {species.habitat}
-              </p>
+              <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">{species.habitat}</p>
             </div>
           )}
           {distributionText && (
             <div>
-              <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+              <h3 class="mb-3 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">
                 Distribución Geográfica
               </h3>
-              <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                {distributionText}
-              </p>
+              <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">{distributionText}</p>
             </div>
           )}
         </div>

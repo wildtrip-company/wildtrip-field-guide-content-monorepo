@@ -18,7 +18,7 @@ const conservationStatus = species.conservationStatus ? getConservationStatus(sp
 // Define colors for conservation status
 const getStatusColor = (status: string | undefined) => {
   if (!status) return 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
-  
+
   switch (status) {
     case 'critically_endangered':
       return 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
@@ -41,62 +41,74 @@ const getStatusColor = (status: string | undefined) => {
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <!-- Taxonomic Classification -->
       <div>
-        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+        <h3 class="mb-3 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">
           Clasificación Taxonómica
         </h3>
         <dl class="space-y-1.5 text-sm">
-          {species.kingdom && (
-            <div class="flex">
-              <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Reino:</dt>
-              <dd class="text-gray-900 dark:text-gray-200">{species.kingdom}</dd>
-            </div>
-          )}
-          {species.phylum && (
-            <div class="flex">
-              <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Filo:</dt>
-              <dd class="text-gray-900 dark:text-gray-200">{species.phylum}</dd>
-            </div>
-          )}
-          {species.class && (
-            <div class="flex">
-              <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Clase:</dt>
-              <dd class="text-gray-900 dark:text-gray-200">{species.class}</dd>
-            </div>
-          )}
-          {species.order && (
-            <div class="flex">
-              <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Orden:</dt>
-              <dd class="text-gray-900 dark:text-gray-200">{species.order}</dd>
-            </div>
-          )}
-          {species.family && (
-            <div class="flex">
-              <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Familia:</dt>
-              <dd class="text-gray-900 dark:text-gray-200">{species.family}</dd>
-            </div>
-          )}
+          {
+            species.kingdom && (
+              <div class="flex">
+                <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Reino:</dt>
+                <dd class="text-gray-900 dark:text-gray-200">{species.kingdom}</dd>
+              </div>
+            )
+          }
+          {
+            species.phylum && (
+              <div class="flex">
+                <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Filo:</dt>
+                <dd class="text-gray-900 dark:text-gray-200">{species.phylum}</dd>
+              </div>
+            )
+          }
+          {
+            species.class && (
+              <div class="flex">
+                <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Clase:</dt>
+                <dd class="text-gray-900 dark:text-gray-200">{species.class}</dd>
+              </div>
+            )
+          }
+          {
+            species.order && (
+              <div class="flex">
+                <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Orden:</dt>
+                <dd class="text-gray-900 dark:text-gray-200">{species.order}</dd>
+              </div>
+            )
+          }
+          {
+            species.family && (
+              <div class="flex">
+                <dt class="w-20 font-medium text-gray-500 dark:text-gray-400">Familia:</dt>
+                <dd class="text-gray-900 dark:text-gray-200">{species.family}</dd>
+              </div>
+            )
+          }
         </dl>
       </div>
 
       <!-- Conservation Status -->
       <div>
-        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+        <h3 class="mb-3 text-sm font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400">
           Estado de Conservación
         </h3>
-        {conservationStatus ? (
-          <div class="space-y-2">
-            <span class={`inline-block rounded-md px-2.5 py-1 text-sm font-medium ${getStatusColor(species.conservationStatus)}`}>
-              {conservationStatus.label}
-            </span>
-            {conservationStatus.description && (
-              <p class="text-xs text-gray-600 dark:text-gray-400">
-                {conservationStatus.description}
-              </p>
-            )}
-          </div>
-        ) : (
-          <span class="text-sm text-gray-500 dark:text-gray-400">No evaluado</span>
-        )}
+        {
+          conservationStatus ? (
+            <div class="space-y-2">
+              <span
+                class={`inline-block rounded-md px-2.5 py-1 text-sm font-medium ${getStatusColor(species.conservationStatus)}`}
+              >
+                {conservationStatus.label}
+              </span>
+              {conservationStatus.description && (
+                <p class="text-xs text-gray-600 dark:text-gray-400">{conservationStatus.description}</p>
+              )}
+            </div>
+          ) : (
+            <span class="text-sm text-gray-500 dark:text-gray-400">No evaluado</span>
+          )
+        }
       </div>
     </div>
   </div>
